@@ -48,7 +48,7 @@ class AbrigoAnimais {
       };
     }
     //#endregion
-    // --- Função auxiliar para verificar ordem dos brinquedos ---
+    
     function verificaOrdem(brinquedosPessoa, brinquedosAnimal) {
       let i = 0;
       for (let brinquedo of brinquedosPessoa) {
@@ -58,13 +58,12 @@ class AbrigoAnimais {
       return false;
     }
 
-    // função para remover brinquedos usados da pessoa
     function removeBrinquedosUsados(brinquedosPessoa, brinquedosAnimal) {
       let i = 0;
       for (let j = 0; j < brinquedosPessoa.length; j++) {
         if (brinquedosPessoa[j] === brinquedosAnimal[i]) {
           i++;
-          brinquedosPessoa[j] = null; // marca como usado
+          brinquedosPessoa[j] = null; 
           if (i === brinquedosAnimal.length) break;
         }
       }
@@ -76,7 +75,6 @@ class AbrigoAnimais {
     let contagemPessoa1 = 0;
     let contagemPessoa2 = 0;
 
-    // loop pelos animais na ordem fornecida
     for (let nome of animaisArray) {
       const animal = this.animais.find((a) => a.nome === nome);
       if (animal.nome === "Loco") {
@@ -107,7 +105,6 @@ class AbrigoAnimais {
 
         continue;
       }
-      // verifica quem consegue adotar o animal baseado nos brinquedos ainda disponíveis
       var pessoa1Ganha = verificaOrdem(
         brinquedosPessoa1Disponiveis,
         animal.brinquedos
@@ -137,10 +134,8 @@ class AbrigoAnimais {
           );
         }
       } else if (pessoa1Ganha && pessoa2Ganha) {
-        // empate -> animal fica no abrigo
         resultado.push(`${nome} - abrigo`);
       } else {
-        // ninguém consegue -> animal fica no abrigo
         resultado.push(`${nome} - abrigo`);
       }
     }
