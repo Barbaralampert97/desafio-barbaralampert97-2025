@@ -38,7 +38,6 @@ class AbrigoAnimais {
       return { erro: 'Brinquedo inválido' };
     }
     //#endregion
-    // por enquanto, todos os animais ficam no abrigo
     // --- Função auxiliar para verificar ordem dos brinquedos ---
     function verificaOrdem(brinquedosPessoa, brinquedosAnimal) {
       let i = 0;
@@ -48,22 +47,50 @@ class AbrigoAnimais {
       }
       return false;
     }
-    const resultado = [];
 
-    for (let nome of animaisArray) {
-      const animal = this.animais.find(a => a.nome === nome);
-
-      const pessoa1Ganha = verificaOrdem(brinquedos1Array, animal.brinquedos);
-      const pessoa2Ganha = verificaOrdem(brinquedos2Array, animal.brinquedos);
-
-      if (pessoa1Ganha && !pessoa2Ganha) {
-        resultado.push(`${nome} - pessoa 1`);
-      } else if (!pessoa1Ganha && pessoa2Ganha) {
-        resultado.push(`${nome} - pessoa 2`);
-      } else {
-        resultado.push(`${nome} - abrigo`);
+    // função para remover brinquedos usados da pessoa
+    function removeBrinquedosUsados(brinquedosPessoa, brinquedosAnimal) {
+      let i = 0;
+      for (let j = 0; j < brinquedosPessoa.length; j++) {
+        if (brinquedosPessoa[j] === brinquedosAnimal[i]) {
+          i++;
+          brinquedosPessoa[j] = null; // marca como usado
+          if (i === brinquedosAnimal.length) break;
+        }
       }
+      return brinquedosPessoa.filter(b => b !== null);
     }
+    const resultado = [];
+    let brinquedosPessoa1Disponiveis = [...brinquedos1Array];
+    let brinquedosPessoa2Disponiveis = [...brinquedos2Array];
+
+   
+  // loop pelos animais na ordem fornecida
+  for (let nome of animaisArray) {
+    const animal = this.animais.find(a => a.nome === nome);
+
+    // verifica quem consegue adotar o animal baseado nos brinquedos ainda disponíveis
+    const pessoa1Ganha = verificaOrdem(brinquedosPessoa1Disponiveis, animal.brinquedos);
+    const pessoa2Ganha = verificaOrdem(brinquedosPessoa2Disponiveis, animal.brinquedos);
+
+    if (pessoa1Ganha && !pessoa2Ganha) {
+      resultado.push(`${nome} - pessoa 1`);
+      if (animal.especie === 'gato') {
+        brinquedosPessoa1Disponiveis = removeBrinquedosUsados(brinquedosPessoa1Disponiveis, animal.brinquedos);
+      }
+    } else if (!pessoa1Ganha && pessoa2Ganha) {
+      resultado.push(`${nome} - pessoa 2`);
+      if (animal.especie === 'gato') {
+        brinquedosPessoa2Disponiveis = removeBrinquedosUsados(brinquedosPessoa2Disponiveis, animal.brinquedos);
+      }
+    } else if (pessoa1Ganha && pessoa2Ganha) {
+      // empate -> animal fica no abrigo
+      resultado.push(`${nome} - abrigo`);
+    } else {
+      // ninguém consegue -> animal fica no abrigo
+      resultado.push(`${nome} - abrigo`);
+    }
+  }
 
 
     return resultado.sort();
