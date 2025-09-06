@@ -63,6 +63,9 @@ class AbrigoAnimais {
     const resultado = [];
     let brinquedosPessoa1Disponiveis = [...brinquedos1Array];
     let brinquedosPessoa2Disponiveis = [...brinquedos2Array];
+    let contagemPessoa1 = 0;
+    let contagemPessoa2 = 0;
+
 
    
   // loop pelos animais na ordem fornecida
@@ -70,16 +73,19 @@ class AbrigoAnimais {
     const animal = this.animais.find(a => a.nome === nome);
 
     // verifica quem consegue adotar o animal baseado nos brinquedos ainda disponíveis
-    const pessoa1Ganha = verificaOrdem(brinquedosPessoa1Disponiveis, animal.brinquedos);
-    const pessoa2Ganha = verificaOrdem(brinquedosPessoa2Disponiveis, animal.brinquedos);
-
-    if (pessoa1Ganha && !pessoa2Ganha) {
+    var pessoa1Ganha = verificaOrdem(brinquedosPessoa1Disponiveis, animal.brinquedos);
+    var pessoa2Ganha = verificaOrdem(brinquedosPessoa2Disponiveis, animal.brinquedos);
+    contagemPessoa1 >=1 ? pessoa1Ganha = false : pessoa1Ganha;
+    contagemPessoa2 >=1 ? pessoa2Ganha = false : pessoa2Ganha;
+    if (pessoa1Ganha && !pessoa2Ganha ) {
       resultado.push(`${nome} - pessoa 1`);
+      contagemPessoa1++;
       if (animal.especie === 'gato') {
         brinquedosPessoa1Disponiveis = removeBrinquedosUsados(brinquedosPessoa1Disponiveis, animal.brinquedos);
       }
-    } else if (!pessoa1Ganha && pessoa2Ganha) {
+    } else if (!pessoa1Ganha && pessoa2Ganha ) {
       resultado.push(`${nome} - pessoa 2`);
+      contagemPessoa2++;
       if (animal.especie === 'gato') {
         brinquedosPessoa2Disponiveis = removeBrinquedosUsados(brinquedosPessoa2Disponiveis, animal.brinquedos);
       }
